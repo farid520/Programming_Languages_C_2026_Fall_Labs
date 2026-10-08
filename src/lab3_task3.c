@@ -1,7 +1,7 @@
 /*
  * Lab 3, Task 3
  * Name: Farid Hajiyev
- * Student ID: 251ADB132
+ * Student ID: 251ADB132git pull origin main --no-rebase
  *
  * Implement basic string handling functions.
  * Write your own versions of:

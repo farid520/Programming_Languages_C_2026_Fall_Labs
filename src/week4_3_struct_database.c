@@ -1,7 +1,7 @@
 /*
  * week4_3_struct_database.c
- * Author: [Your Name]
- * Student ID: [Your ID]
+ * Author: Farid Hajiyev
+ * Student ID: 251ADB190
  * Description:
  *   Simple in-memory "database" using an array of structs.
  *   Use malloc to allocate space for n Student records,
@@ -18,6 +18,11 @@
 
 // TODO: Define struct Student with fields name (char[50]), id (int), grade (float)
 //       (same definition as in Task 2)
+struct Student {
+    char name[50];
+    int id;
+    float grade;
+};
 
 int main(void) {
     int n;
@@ -31,26 +36,53 @@ int main(void) {
 
     // TODO: Allocate memory for n Student structs using malloc
     //       Example: students = malloc(n * sizeof(struct Student));
+    students = malloc((size_t)n * sizeof(struct Student));
 
     // TODO: Check allocation success
     // If students is NULL: print "Memory allocation failed." and return 1
+    if (students == NULL) {
+        printf("Memory allocation failed.\n");
+        return 1;
+    }
 
     // TODO: Read student data in a loop. For student i (counting from 1):
     //       print "Enter data for student %d: ", then read
     //       name (scanf("%49s", ...)), id and grade.
     //       If a value cannot be read: print "Invalid input.",
     //       free the array and return 1
+    for (int i = 1; i <= n; i++) {
+        struct Student *s = &students[i - 1];
+        printf("Enter data for student %d: ", i);
+        if (scanf("%49s %d %f", s->name, &s->id, &s->grade) != 3) {
+            printf("Invalid input.\n");
+            free(students);
+            return 1;
+        }
+    }
 
     // TODO: Print an empty line, then the table:
     //       printf("%-6s %-11s %s\n", "ID", "Name", "Grade");
     //       and for each student:
     //       printf("%-6d %-11s %.1f\n", id, name, grade);
+    printf("\n");
+    printf("%-6s %-11s %s\n", "ID", "Name", "Grade");
+    for (int i = 0; i < n; i++) {
+        printf("%-6d %-11s %.1f\n",
+               students[i].id, students[i].name, students[i].grade);
+    }
 
     // Optional (not autograded): after the table, print the average
     // grade or the top student
+    struct Student *top = &students[0];
+    for (int i = 1; i < n; i++) {
+        if (students[i].grade > top->grade) {
+            top = &students[i];
+        }
+    }
+    printf("Top student: %s (%.1f)\n", top->name, top->grade);
 
     // TODO: Free allocated memory
-    (void)students;  // remove this line once you use students
+    free(students);
 
     return 0;
 }
